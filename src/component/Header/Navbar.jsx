@@ -4,19 +4,27 @@ import { AuthContext } from '../Context/AuthContext';
 
 const Navbar = () => {
 
-    const {user}=use(AuthContext);
+    const {user,signOutInfo}=use(AuthContext);
     const links= <>
     <li><NavLink to="/">Home</NavLink></li>
     <li><NavLink to="/allproducts">All Products</NavLink></li>
-    {/* <li><NavLink to="/login">Login</NavLink></li> */}
-    {/* <li><NavLink to="/register">Register</NavLink></li> */}
     {
         user && <> 
-        <li><NavLink to="/products">My Products</NavLink></li>
-        <li><NavLink to="/bids">Bids</NavLink></li>
+        <li><NavLink to="/myproducts">My Products</NavLink></li>
+        <li><NavLink to="/mybids">Bids</NavLink></li>
         </>
         }
     </>
+    const handleSignOut=()=>{
+        signOutInfo()
+        .then(() => {
+           console.log("Sign out successful.")
+          })
+        .catch((error) => {
+            console.error("Error signing out: ", error);
+        });
+
+    }
     return (
         <div className="navbar bg-base-100 shadow-sm">
   <div className="navbar-start">
@@ -30,7 +38,7 @@ const Navbar = () => {
         {links}
       </ul>
     </div>
-    <a className="btn btn-ghost text-xl">daisyUI</a>
+    <a className="btn btn-ghost text-xl">Smart Deal</a>
   </div>
   <div className="navbar-center hidden md:flex">
     <ul className="menu menu-horizontal px-1">
@@ -39,7 +47,8 @@ const Navbar = () => {
   </div>
   <div className="navbar-end">
    { user ?
-   <a className="btn">Sign Out</a> : <a className="btn">Login</a>}
+   <button className="btn btn-primary" onClick={handleSignOut}>Sign Out</button> : <NavLink to="/register">Login</NavLink>
+   }
   </div>
 </div>
     );

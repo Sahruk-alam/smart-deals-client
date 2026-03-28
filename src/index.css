@@ -5,6 +5,15 @@
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary: #1fb2a6;
+  --color-primary: blue;
   --color-secondary: teal;
+ 
+}.btn-primary {
+ @apply bg-gradient-to-r from-[#632EE3] to-[#9F62F2] ;
 }
+.btn-primary:hover {
+ @apply opacity-90 ;
+}
+/* .text-primary {
+ @apply text-gradient-to-r from-[#632EE3] to-[#9F62F2] ;
+} */
