@@ -15,5 +15,5 @@ const Recent = ({ recentProducts }) => {
         </div>
     );
 };
-
+ 
 export default Recent;

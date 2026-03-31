@@ -1,5 +1,5 @@
 import React, { use } from 'react';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import { AuthContext } from '../Context/AuthContext';
 
 const Navbar = () => {
@@ -38,7 +38,7 @@ const Navbar = () => {
         {links}
       </ul>
     </div>
-    <a className="btn btn-ghost text-xl">Smart Deal</a>
+    <Link to="/" className="btn btn-ghost text-xl">Smart Deal</Link>
   </div>
   <div className="navbar-center hidden md:flex">
     <ul className="menu menu-horizontal px-1">
