@@ -1,7 +1,7 @@
-import React from 'react';
 import Recent from './Recent';
 const recentProducts = fetch('http://localhost:3000/recent-products')
     .then(res => res.json());
+
 const Home = () => {
     return (
         <div>

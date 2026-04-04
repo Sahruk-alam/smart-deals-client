@@ -1,4 +1,4 @@
-import React, { use, useRef } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { useLoaderData } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
 import Swal from "sweetalert2";
@@ -6,8 +6,17 @@ import Swal from "sweetalert2";
 const ProductsDetails = () => {
   const product = useLoaderData();
   const { _id: productId } = product;
+  const [bids, setBids] = useState([]);
 
-  console.log(product);
+  useEffect(()=>{
+    fetch(`http://localhost:3000/products/bids/${productId}`)
+    .then(res => res.json())
+    .then(data => {
+      console.log("Bids for the products : ", data);
+      setBids(data);
+    })
+  },[productId])
+
 
   const modalRef = useRef(null);
   const { user } = use(AuthContext);
@@ -47,6 +56,12 @@ const ProductsDetails = () => {
   showConfirmButton: false,
   timer: 1500
 });
+
+  newBids._id = data.insertedId;
+  const updatedBids=[...bids, newBids];
+  updatedBids.sort((a,b) => b.bid_price - a.bid_price);
+  setBids(updatedBids);
+
         }
       });
   };
@@ -82,7 +97,7 @@ const ProductsDetails = () => {
                     className="input"
                     name="name"
                     readOnly
-                    defaultValue={user.displayName}
+                    defaultValue={user?.displayName}
                     placeholder="Name"
                   />
 
@@ -92,7 +107,7 @@ const ProductsDetails = () => {
                     className="input"
                     name="email"
                     readOnly
-                    defaultValue={user.email}
+                    defaultValue={user?.email}
                     placeholder="Email"
                   />
 
@@ -123,6 +138,61 @@ const ProductsDetails = () => {
         </div>
       </div>
       {/* bids for products */}
+      <div>
+        <h3 className="text-xl font-bold">Bids for this product:  <span className="text-primary">{bids.length}</span></h3>
+
+        <div className="overflow-x-auto">
+  <table className="table">
+    {/* head */}
+    <thead>
+      <tr>
+        <th>
+          SL No.
+        </th>
+        <th>Buyer name</th>
+        <th>Buyer Email</th>
+        <th>Bids price</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        bids.map((bid, index) => (
+          <tr>
+            <th>{index + 1}</th>
+            <td>
+          <div className="flex items-center gap-3">
+            <div className="avatar">
+              <div className="mask mask-squircle h-12 w-12">
+                <img
+                  src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                  alt="Avatar Tailwind CSS Component" />
+              </div>
+            </div>
+            <div>
+              <div className="font-bold">{bid.buyer_name}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          {bid.buyer_email}
+          <br />
+          
+        </td>
+        <td>{bid.bid_price}</td>
+        <th>
+          <button className="btn btn-ghost btn-xs">{bid.status}</button>
+        </th>
+      </tr>
+     ))
+      }
+    
+      
+    </tbody>
+  
+  </table>
+</div>
+      </div>
     </div>
   );
 };
