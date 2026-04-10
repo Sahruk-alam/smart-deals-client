@@ -11,6 +11,7 @@ import Register from "./component/pages/Register.jsx";
 import MyProducts from "./component/pages/MyProducts.jsx";
 import MyBids from "./component/pages/MyBids.jsx";
 import ProductsDetails from "./component/Home/ProductsDetails.jsx";
+import CreateProduct from "./component/pages/CreateProduct.jsx";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,11 @@ const router = createBrowserRouter([
           fetch(`http://localhost:3000/products/${params.id}`),
         element: <ProductsDetails></ProductsDetails>,
       },
+
+      {
+        path:"/createproduct",
+        Component:CreateProduct,
+      }
     ],
   },
 ]);
