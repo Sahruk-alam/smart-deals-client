@@ -1,6 +1,15 @@
+// import axios from 'axios';
 import React from 'react';
+import Swal from 'sweetalert2';
+
+import useAxios from '../useAxios/useAxios';
+import useAuth from '../../Hook/useAuth';
 
 const CreateProduct = () => {
+ 
+    const {user}=useAuth();
+
+    const axiosInstance=useAxios();
 
     const handleCreateProduct = (e) => {
         e.preventDefault();
@@ -36,19 +45,11 @@ const CreateProduct = () => {
         };
 
         console.log('Form submitted',title_create, minPrice, category1, productCondition, maxPrice, usageTime, imageUrl, sellerName, sellerContact, sellerEmail, sellerImageUrl, location1, description1);
-        // Handle form submission logic here
-        fetch("http://localhost:3000/products",{
-            method: "POST",
-             headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newProduct)
-
+        
+        axiosInstance.post('/products', newProduct)
+        .then(data=>{
+            console.log('Product created:', data.data);
         })
-        .then(res => res.json())
-        .then(data => {
-            console.log('Product created:', data);
-        });
     }
 
     return (
@@ -57,7 +58,7 @@ const CreateProduct = () => {
             <h2 className='text-center  text-xl'>Back to Product</h2>
             <h2 className='text-center font-bold mt-4 text-3xl'>Create <span className='text-primary'>A Product</span></h2>
             
-    <form onSubmit={handleCreateProduct} className='bg-white p-6 mt-14 shadow-2xl rounded-xl'>
+         <form onSubmit={handleCreateProduct} className='bg-white p-6 mt-14 shadow-2xl rounded-xl'>
                 <div className='flex flex-col md:flex-row gap-8 '>
                 <div className=''>
                     <label className="">Title</label>
@@ -116,7 +117,7 @@ const CreateProduct = () => {
             <input type="text" name='location' placeholder="city country" className="input input-bordered w-full " />
           <label className="">Simple Description about your Product</label>
             <input type="text" name='description' placeholder="e.g. I bought this product 3 month ago. did not used more than 1/2 time. actually learning
- guitar is so tough..... " className="input input-bordered w-full " />
+              guitar is so tough..... " className="input input-bordered w-full " />
         
         <button className="btn mt-12 w-full btn-primary">Create Product</button>
         

@@ -12,6 +12,7 @@ import MyProducts from "./component/pages/MyProducts.jsx";
 import MyBids from "./component/pages/MyBids.jsx";
 import ProductsDetails from "./component/Home/ProductsDetails.jsx";
 import CreateProduct from "./component/pages/CreateProduct.jsx";
+import PrivateRoute from "./component/PrivateRoute/PrivateRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +48,7 @@ const router = createBrowserRouter([
 
       {
         path:"/createproduct",
-        Component:CreateProduct,
+        element:<PrivateRoute><CreateProduct></CreateProduct></PrivateRoute>
       }
     ],
   },
