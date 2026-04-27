@@ -13,7 +13,7 @@ const Register = () => {
           email: result.user.email,
           image: result.user.photoURL,
         };
-        fetch("http://localhost:3000/users", {
+        fetch("https://smart-deals-api-server-sandy-rho.vercel.app/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -26,7 +26,6 @@ const Register = () => {
         console.error(error);
       });
   };
-
 
   return (
     <div className="hero-content flex-col">

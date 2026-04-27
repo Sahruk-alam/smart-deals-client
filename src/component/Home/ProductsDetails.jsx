@@ -9,24 +9,25 @@ const ProductsDetails = () => {
   const { _id: productId } = product;
   const [bids, setBids] = useState([]);
 
-  useEffect(()=>{
-     axios.get(`http://localhost:3000/products/bids/${productId}`)
-     .then(data => {
-      console.log("After axios get bids : ", data.data);
-      setBids(data.data);
-     })
-
-  },[productId])
+  useEffect(() => {
+    axios
+      .get(
+        `https://smart-deals-api-server-sandy-rho.vercel.app/products/bids/${productId}`,
+      )
+      .then((data) => {
+        console.log("After axios get bids : ", data.data);
+        setBids(data.data);
+      });
+  }, [productId]);
 
   // useEffect(()=>{
-  //   fetch(`http://localhost:3000/products/bids/${productId}`)
+  //   fetch(`https://smart-deals-api-server-sandy-rho.vercel.app/products/bids/${productId}`)
   //   .then(res => res.json())
   //   .then(data => {
   //     console.log("Bids for the products : ", data);
   //     setBids(data);
   //   })
   // },[productId])
-
 
   const modalRef = useRef(null);
   const { user } = use(AuthContext);
@@ -39,7 +40,7 @@ const ProductsDetails = () => {
     const email = event.target.email.value;
     const bidAmount = event.target.bidAmount.value;
     console.log(productId, name, email, bidAmount);
-    
+
     const newBids = {
       product: productId,
       buyer_name: name,
@@ -47,7 +48,7 @@ const ProductsDetails = () => {
       bid_price: bidAmount,
       status: "pending",
     };
-    fetch("http://localhost:3000/bids", {
+    fetch("https://smart-deals-api-server-sandy-rho.vercel.app/bids", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -57,22 +58,21 @@ const ProductsDetails = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log("Atfer insert bids : ", data);
-        if(data.insertedId){
+        if (data.insertedId) {
           // alert("Your bid has been placed successfully!");
           modalRef.current.close();
-  Swal.fire({
-  position: "top-end",
-  icon: "success",
-  title: "Your bids has been placed successfully!",
-  showConfirmButton: false,
-  timer: 1500
-});
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your bids has been placed successfully!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
 
-  newBids._id = data.insertedId;
-  const updatedBids=[...bids, newBids];
-  updatedBids.sort((a,b) => b.bid_price - a.bid_price);
-  setBids(updatedBids);
-
+          newBids._id = data.insertedId;
+          const updatedBids = [...bids, newBids];
+          updatedBids.sort((a, b) => b.bid_price - a.bid_price);
+          setBids(updatedBids);
         }
       });
   };
@@ -150,59 +150,57 @@ const ProductsDetails = () => {
       </div>
       {/* bids for products */}
       <div>
-        <h3 className="text-xl font-bold">Bids for this product:  <span className="text-primary">{bids.length}</span></h3>
+        <h3 className="text-xl font-bold">
+          Bids for this product:{" "}
+          <span className="text-primary">{bids.length}</span>
+        </h3>
 
         <div className="overflow-x-auto">
-  <table className="table">
-    {/* head */}
-    <thead>
-      <tr>
-        <th>
-          SL No.
-        </th>
-        <th>Buyer name</th>
-        <th>Buyer Email</th>
-        <th>Bids price</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {
-        bids.map((bid, index) => (
-          <tr key={bid._id}>
-            <th>{index + 1}</th>
-            <td>
-          <div className="flex items-center gap-3">
-            <div className="avatar">
-              <div className="mask mask-squircle h-12 w-12">
-                <img
-                  src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                  alt="Avatar Tailwind CSS Component" />
-              </div>
-            </div>
-            <div>
-              <div className="font-bold">{bid.buyer_name}</div>
-            </div>
-          </div>
-        </td>
-        <td>
-          {bid.buyer_email}
-          <br />
-          
-        </td>
-        <td>{bid.bid_price}</td>
-        <th>
-          <button className="btn btn-ghost btn-xs">{bid.status}</button>
-        </th>
-      </tr>
-     ))
-      }
-    
-      
-    </tbody>
-  
-  </table>
-</div>
+          <table className="table">
+            {/* head */}
+            <thead>
+              <tr>
+                <th>SL No.</th>
+                <th>Buyer name</th>
+                <th>Buyer Email</th>
+                <th>Bids price</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bids.map((bid, index) => (
+                <tr key={bid._id}>
+                  <th>{index + 1}</th>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle h-12 w-12">
+                          <img
+                            src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                            alt="Avatar Tailwind CSS Component"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-bold">{bid.buyer_name}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    {bid.buyer_email}
+                    <br />
+                  </td>
+                  <td>{bid.bid_price}</td>
+                  <th>
+                    <button className="btn btn-ghost btn-xs">
+                      {bid.status}
+                    </button>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -33,23 +33,37 @@ const router = createBrowserRouter([
       },
       {
         path: "/myproducts",
-        element: <MyProducts></MyProducts>,
+        element: (
+          <PrivateRoute>
+            <MyProducts></MyProducts>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/mybids",
-        element: <MyBids></MyBids>,
+        element: (
+          <PrivateRoute>
+            <MyBids></MyBids>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/productsDetails/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/products/${params.id}`),
+          fetch(
+            `https://smart-deals-api-server-sandy-rho.vercel.app/products/${params.id}`,
+          ),
         element: <ProductsDetails></ProductsDetails>,
       },
 
       {
-        path:"/createproduct",
-        element:<PrivateRoute><CreateProduct></CreateProduct></PrivateRoute>
-      }
+        path: "/createproduct",
+        element: (
+          <PrivateRoute>
+            <CreateProduct></CreateProduct>
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 ]);

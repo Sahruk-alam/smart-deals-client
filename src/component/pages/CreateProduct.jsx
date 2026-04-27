@@ -2,15 +2,17 @@
 import React from 'react';
 import Swal from 'sweetalert2';
 
-import useAxios from '../useAxios/useAxios';
+// import useAxios from '../useAxios/useAxios';
 import useAuth from '../../Hook/useAuth';
+import axiosSecure from '../useAxios/axiosSecure';
 
 const CreateProduct = () => {
  
     const {user}=useAuth();
 
-    const axiosInstance=useAxios();
-
+    // const axiosInstance=useAxios();
+    const useAxiosSecure=axiosSecure();
+    
     const handleCreateProduct = (e) => {
         e.preventDefault();
         const title_create= e.target.title.value;
@@ -26,7 +28,7 @@ const CreateProduct = () => {
         const sellerImageUrl= e.target.sellerImageUrl.value;
         const location1= e.target.location.value;
         const description1= e.target.description.value;
-        e.target.reset();
+        // e.target.reset();
 
         const newProduct = {
             title: title_create,
@@ -44,9 +46,9 @@ const CreateProduct = () => {
             seller_contact: sellerContact,     
         };
 
-        console.log('Form submitted',title_create, minPrice, category1, productCondition, maxPrice, usageTime, imageUrl, sellerName, sellerContact, sellerEmail, sellerImageUrl, location1, description1);
+        // console.log('Form submitted',title_create, minPrice, category1, productCondition, maxPrice, usageTime, imageUrl, sellerName, sellerContact, sellerEmail, sellerImageUrl, location1, description1);
         
-        axiosInstance.post('/products', newProduct)
+        useAxiosSecure.post('/products', newProduct)
         .then(data=>{
             console.log('Product created:', data.data);
         })
